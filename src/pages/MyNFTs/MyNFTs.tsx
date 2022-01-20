@@ -1,47 +1,48 @@
-import { useState, useEffect } from "react";
-import { ethers } from "ethers";
-import NFTweetAbi from "../../abi/NFTweet.json";
-import { useEthers } from "@usedapp/core";
+import { useContext, useEffect, useState } from "react";
+import Web3Context from "../../context/Web3Context";
+import constants from "../../contants";
 
 export default function MyNFTs() {
-  const { activateBrowserWallet, library } = useEthers();
-  const [provider, setProvider] = useState(null);
-  const contractAddress = "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0";
+  const { contract, account } = useContext(Web3Context);
+  const [message, setMessage] = useState("");
+  const [nfts, setNfts] = useState([]);
 
   useEffect(() => {
-    if (library && library.provider) {
-      setProvider(library.provider);
-      console.log(library.provider);
+    if (contract && account) {
+      getUserMessageId();
     }
-  }, []);
+  }, [contract, account]);
 
-  useEffect(() => {
-    if (provider) {
-      console.log({ provider });
-      getSigner(provider);
-    }
-  }, [provider]);
+  const getUserMessageId = async () => {
+    const userMessageIds = await contract.getUserMessageIds(account);
+    console.log(userMessageIds);
 
-  const getSigner = async (provider) => {
-    console.log(provider);
-
-    const signer = await provider.getSigner();
-    console.log(signer);
-    // const contract = new ethers.Contract(
-    //   contractAddress,
-    //   NFTweetAbi.abi,
-    //   signer
-    // );
-
-    // getContract(contract);
+    setNfts([]);
+    userMessageIds.forEach(async (userMessageId) => {
+      const nft = await contract.tokenURI(userMessageId);
+      setNfts((previousNfts) => [...previousNfts, nft]);
+    });
   };
 
-  const getContract = async (c) => {
-    const contract = await c.mint("asd");
-    console.log(contract);
+  const NftComponent = ({ nftStr }) => {
+    const nft = JSON.parse(nftStr);
+    let creationDate = nft.attributes.find(
+      (attr) => attr.trait_type === "Created"
+    );
+    return (
+      <div className="flex justify-center mt-5">
+        <div className="flex mr-5 pt-5">{creationDate.value}</div>
+
+        <img src={nft.image} alt="" />
+      </div>
+    );
   };
 
-  // console.log(contract);
-
-  return <div>MyNFTs</div>;
+  return (
+    <div className="flex form-control">
+      {nfts.map((nftStr, key) => (
+        <NftComponent nftStr={nftStr} key={key} />
+      ))}
+    </div>
+  );
 }

@@ -1,3 +1,5 @@
-.bg-header {
-  background-color: #1d9bf0;
+@media screen and (max-width: 1024px) {
+  .mobile-menu {
+    flex-direction: column;
+  }
 }
