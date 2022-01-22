@@ -25,6 +25,7 @@ export default function Thread() {
     [...messageIds].reverse().forEach(async (userMessageId) => {
       let nft = await contract.tokenURI(userMessageId);
       nft = decodeBase64(nft.split(",")[1]);
+      nft = JSON.parse(nft);
       setNfts((previousNfts) => [...previousNfts, nft]);
     });
   };

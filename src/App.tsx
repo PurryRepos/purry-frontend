@@ -79,7 +79,8 @@ export default function App() {
         <div className="container mx-auto">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/MyNFTs" element={<MyNFTs />} />
+            <Route path="/mynfts" element={<MyNFTs />} />
+            <Route path="/thread/:id" element={<MyNFTs />} />
           </Routes>
         </div>
         <Footer />

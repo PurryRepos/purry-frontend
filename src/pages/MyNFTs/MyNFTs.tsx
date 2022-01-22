@@ -21,6 +21,7 @@ export default function MyNFTs() {
     [...userMessageIds].reverse().forEach(async (userMessageId) => {
       let nft = await contract.tokenURI(userMessageId);
       nft = decodeBase64(nft.split(",")[1]);
+      nft = JSON.parse(nft);
       setNfts((previousNfts) => [...previousNfts, nft]);
     });
   };
@@ -28,7 +29,7 @@ export default function MyNFTs() {
   return (
     <div className="flex flex-col">
       {nfts.length ? (
-        nfts.map((nftStr, key) => <Message nftStr={nftStr} key={key} />)
+        nfts.map((nft, key) => <Message nft={nft} key={key} />)
       ) : (
         <p className="text-center mt-5">
           <b>You don't have an NFT yet</b>
