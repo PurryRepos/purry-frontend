@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import constants from "./contants.js";
+import constants from "./constants";
 
 export default async function getSigner() {
   if (!window.ethereum) {

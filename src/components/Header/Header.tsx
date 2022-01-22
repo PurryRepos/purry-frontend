@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import Web3Context from "../../context/Web3Context";
+import truncateAddress from "../../utils/truncateAddress";
 
 import "./Header.css";
 
@@ -8,12 +9,8 @@ export default function Header() {
   const web3Context = useContext(Web3Context);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
 
-  const truncate = (str) => {
-    return str.slice(0, 5) + "..." + str.slice(-5);
-  };
-
   return (
-    <>
+    <header>
       {web3Context.showErrorMessage && (
         <div className="mt-5 alert alert-error pl-6">
           <div className="flex-1">
@@ -24,7 +21,7 @@ export default function Header() {
       <div className="navbar mt-5 mb-2 shadow-lg text-neutral-content rounded-box bg-primary">
         <div className="flex-1 px-2 mx-2">
           <Link to="/" className="btn btn-ghost btn-sm rounded-btn">
-            <span className="text-lg font-bold">NFTweets</span>
+            <span className="text-lg font-bold normal-case">NFtalk</span>
           </Link>
         </div>
         <div
@@ -92,7 +89,9 @@ export default function Header() {
               Connect Wallet
             </button>
           ) : (
-            <p className="header-wallet">{truncate(web3Context.account)}</p>
+            <p className="header-wallet">
+              {truncateAddress(web3Context.account)}
+            </p>
           )}
         </div>
         <div className="lg:hidden">
@@ -116,6 +115,6 @@ export default function Header() {
           </button>
         </div>
       </div>
-    </>
+    </header>
   );
 }

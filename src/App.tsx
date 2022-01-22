@@ -1,18 +1,20 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import constants from "./contants.js";
+import constants from "./constants";
 
 import Web3Context from "./context/Web3Context";
 // @ts-ignore
 import Header from "./components/Header/Header.tsx";
 // @ts-ignore
+import Footer from "./components/Footer/Footer.tsx";
+// @ts-ignore
 import Home from "./pages/Home/Home.tsx";
 // @ts-ignore
 import MyNFTs from "./pages/MyNFTs/MyNFTs.tsx";
 // @ts-ignore
-import getSigner from "./getSigner.js";
+import getSigner from "./getSigner";
 // @ts-ignore
-import getContract from "./getContract.js";
+import getContract from "./getContract";
 
 export default function App() {
   const [signer, setSigner] = useState(null);
@@ -80,6 +82,7 @@ export default function App() {
             <Route path="/MyNFTs" element={<MyNFTs />} />
           </Routes>
         </div>
+        <Footer />
       </BrowserRouter>
     </Web3Context.Provider>
   );

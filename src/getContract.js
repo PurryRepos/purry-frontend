@@ -1,14 +1,14 @@
 import { ethers } from "ethers";
-import constants from "./contants.js";
-import NFTweetContract from "./abi/NFTweet.json";
-import getSigner from "./getSigner.js";
+import constants from "./constants";
+import NFtalkContract from "./abi/NFtalk";
+import getSigner from "./getSigner";
 
 export default async function getContract() {
   const signer = await getSigner();
   if (!signer) return false;
   return new ethers.Contract(
     constants.CONTRACT_ADDRESS,
-    NFTweetContract.abi,
+    NFtalkContract.abi,
     signer
   );
 }
