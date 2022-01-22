@@ -4,25 +4,34 @@ import decodeBase64 from "../../utils/decodeBase64";
 // @ts-ignore
 import Message from "../../components/Message/Message.tsx";
 
-export default function MyNFTs() {
+export default function Thread() {
   const { contract, account } = useContext(Web3Context);
   const [nfts, setNfts] = useState([]);
 
   useEffect(() => {
     if (contract && account) {
-      getUserMessages();
+      getThread();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [contract, account]);
 
-  const getUserMessages = async () => {
-    const userMessageIds = await contract.getUserMessageIds(account);
+  const getThread = async () => {
+    const thread = await contract.getThread();
+    console.log(thread);
+
+    const messageIds = getMessageIds(thread);
+
     setNfts([]);
-    [...userMessageIds].reverse().forEach(async (userMessageId) => {
+    [...messageIds].reverse().forEach(async (userMessageId) => {
       let nft = await contract.tokenURI(userMessageId);
       nft = decodeBase64(nft.split(",")[1]);
       setNfts((previousNfts) => [...previousNfts, nft]);
     });
+  };
+
+  const getMessageIds = (thread) => {
+    // get
+    return [];
   };
 
   return (

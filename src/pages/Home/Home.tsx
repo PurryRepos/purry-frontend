@@ -30,6 +30,8 @@ export default function Home() {
         for await (let i of latestIds) {
           let nft = await contract.tokenURI(i);
           nft = decodeBase64(nft.split(",")[1]);
+          nft = JSON.parse(nft);
+          nft.tokenId = i;
           setNfts((previousNfts) => [...previousNfts, nft]);
         }
       }
@@ -77,7 +79,7 @@ export default function Home() {
 
   return (
     <>
-      <div className="flex flex-row form-control">
+      <div className="flex flex-row form-control mt-6">
         <input
           value={message}
           onChange={(e) => setMessage(e.target.value)}
@@ -104,9 +106,9 @@ export default function Home() {
           </p>
         }
       >
-        <div className="flex form-control">
-          {nfts.map((nftStr, key) => (
-            <Message nftStr={nftStr} key={key} />
+        <div className="flex flex-col">
+          {nfts.map((nft, key) => (
+            <Message nft={nft} key={key} />
           ))}
         </div>
       </InfiniteScroll>

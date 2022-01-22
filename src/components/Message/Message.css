@@ -1,6 +1,9 @@
-.message {
-  width: 100%;
-  max-width: 800px;
+.message-container {
+  border: 1px solid #ccc;
+}
+
+.message-info {
+  font-size: 14px;
 }
 
 .unregistered {

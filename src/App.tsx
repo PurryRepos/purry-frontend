@@ -75,8 +75,8 @@ export default function App() {
       }}
     >
       <BrowserRouter>
+        <Header />
         <div className="container mx-auto">
-          <Header />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/MyNFTs" element={<MyNFTs />} />
