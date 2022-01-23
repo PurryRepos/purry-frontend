@@ -11,7 +11,7 @@ export default function Header() {
 
   return (
     <div>
-      <header className="bg-primary">
+      <header className="bg-primary shadow-xl">
         <div className="container mx-auto">
           <div className="navbar text-neutral-content">
             <div className="flex-1 px-2 mx-2">
@@ -25,7 +25,7 @@ export default function Header() {
               }
             >
               <div className="flex items-stretch mobile-menu">
-                <Link to="/" className="btn btn-ghost btn-sm rounded-btn">
+                {/* <Link to="/" className="btn btn-ghost btn-sm rounded-btn">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -40,7 +40,7 @@ export default function Header() {
                     ></path>
                   </svg>
                   Likes
-                </Link>
+                </Link> */}
                 <Link to="/mynfts" className="btn btn-ghost btn-sm rounded-btn">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -58,29 +58,34 @@ export default function Header() {
                   </svg>
                   MyNFTs
                 </Link>
-                <Link to="/" className="btn btn-ghost btn-sm rounded-btn">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="inline-block w-5 mr-2 stroke-current"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
+                {web3Context.account && (
+                  <Link
+                    to={`/user/${web3Context.account}`}
+                    className="btn btn-ghost btn-sm rounded-btn"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                    />
-                  </svg>
-                  Profile
-                </Link>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="inline-block w-5 mr-2 stroke-current"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                      />
+                    </svg>
+                    Profile
+                  </Link>
+                )}
               </div>
             </div>
             <div className="px-2 mx-2">
               {!web3Context.account ? (
                 <button
-                  onClick={() => web3Context.activateBrowserWallet()}
+                  onClick={web3Context.activateBrowserWallet}
                   className="btn btn-ghost btn-sm rounded-btn"
                 >
                   Connect Wallet

@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import constants from "./constants";
 
 import Web3Context from "./context/Web3Context";
+import getSigner from "./getSigner";
+import getContract from "./getContract";
 // @ts-ignore
 import Header from "./components/Header/Header.tsx";
 // @ts-ignore
@@ -12,9 +14,9 @@ import Home from "./pages/Home/Home.tsx";
 // @ts-ignore
 import MyNFTs from "./pages/MyNFTs/MyNFTs.tsx";
 // @ts-ignore
-import getSigner from "./getSigner";
+import Thread from "./pages/Thread/Thread.tsx";
 // @ts-ignore
-import getContract from "./getContract";
+import Profile from "./pages/Profile/Profile.tsx";
 
 export default function App() {
   const [signer, setSigner] = useState(null);
@@ -80,7 +82,8 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/mynfts" element={<MyNFTs />} />
-            <Route path="/thread/:id" element={<MyNFTs />} />
+            <Route path="/thread/:tokenId" element={<Thread />} />
+            <Route path="/user/:address" element={<Profile />} />
           </Routes>
         </div>
         <Footer />

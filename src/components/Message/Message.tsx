@@ -1,5 +1,5 @@
-import { useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import { useState, useContext, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Web3Context from "../../context/Web3Context";
@@ -11,9 +11,21 @@ import "./Message.css";
 dayjs.extend(relativeTime);
 
 const Message = ({ nft }) => {
+  const navigate = useNavigate();
   const { contract } = useContext(Web3Context);
   const [message, setMessage] = useState("");
+  const [owner, setOwner] = useState("");
   let creationDate, userName, userStatus;
+
+  useEffect(() => {
+    getOwner();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [contract]);
+
+  const getOwner = async () => {
+    const _owner = await contract.ownerOf(nft.tokenId);
+    setOwner(_owner);
+  };
 
   nft.attributes.forEach((attr) => {
     switch (attr.trait_type) {
@@ -30,6 +42,7 @@ const Message = ({ nft }) => {
         break;
     }
   });
+
   const fromNow = dayjs.unix(creationDate).fromNow();
   userName = userStatus ? userName : truncateAddress(userName);
 
@@ -51,10 +64,15 @@ const Message = ({ nft }) => {
     contract.voteDownMessage(nft.tokenId);
   };
 
+  const redirectToProfile = (e) => {
+    e.preventDefault();
+    navigate(`/user/${owner}`);
+  };
+
   return (
     <Link to={`/thread/${nft.tokenId}`}>
-      <div className="flex justify-center mt-6">
-        <div className="message-container flex flex-col w-full bg-white	rounded-lg p-5">
+      <div className="flex justify-center mt-6 shadow-md hover:shadow-lg">
+        <div className="flex flex-col w-full bg-white	rounded-lg p-5">
           <div className=" flex flex-col">
             <img src={nft.image} alt="" />
             <div className="flex flex-row justify-between items-center message-info mt-3 mb-3">
@@ -73,13 +91,16 @@ const Message = ({ nft }) => {
                 </span>
               </div>
               <div>
-                Created by:{" "}
-                {userStatus ? (
-                  userName
-                ) : (
-                  <span className="unregistered">{userName}</span>
-                )}{" "}
-                - {fromNow}
+                Posted by:{" "}
+                <span
+                  onClick={(e) => redirectToProfile(e)}
+                  className={`hover:underline ${
+                    !userStatus ? "unregistered" : ""
+                  }`}
+                >
+                  {userName}
+                </span>{" "}
+                • {fromNow}
               </div>
             </div>
           </div>

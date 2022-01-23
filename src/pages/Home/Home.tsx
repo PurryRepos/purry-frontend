@@ -85,9 +85,9 @@ export default function Home() {
           onChange={(e) => setMessage(e.target.value)}
           type="text"
           placeholder="Type your message"
-          className="input input-bordered basis-4/5 mr-3"
+          className="input shadow-md basis-4/5 mr-3"
         />
-        <button onClick={mint} className="btn btn-primary basis-1/5">
+        <button onClick={mint} className="btn btn-primary shadow-lg basis-1/5">
           Mint
         </button>
       </div>
