@@ -58,7 +58,10 @@ const Message = ({ nft }) => {
 
   const voteUp = async (e) => {
     e.preventDefault();
-    contract.voteUpMessage(nft.tokenId);
+    contract.voteUpMessage(nft.tokenId, {
+      gasPrice: constants.GAS_PRICE,
+      gasLimit: 9000000,
+    });
   };
 
   const voteDown = async (e) => {
@@ -112,7 +115,7 @@ const Message = ({ nft }) => {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               type="text"
-              placeholder="Type your message"
+              placeholder="Type reply"
               className="input input-bordered basis-4/5 mr-3"
             />
             <button onClick={reply} className="btn btn-primary basis-1/5">
