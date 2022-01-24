@@ -17,15 +17,13 @@ export default function Thread() {
 
   const getThread = async () => {
     const thread = await contract.getThread();
-    console.log(thread);
-
     const messageIds = getMessageIds(thread);
-
     setNfts([]);
-    [...messageIds].reverse().forEach(async (userMessageId) => {
+    [...messageIds].reverse().forEach(async (userMessageId, i) => {
       let nft = await contract.tokenURI(userMessageId);
       nft = decodeBase64(nft.split(",")[1]);
       nft = JSON.parse(nft);
+      nft.tokenId = i;
       setNfts((previousNfts) => [...previousNfts, nft]);
     });
   };

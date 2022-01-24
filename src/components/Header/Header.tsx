@@ -15,7 +15,7 @@ export default function Header() {
         <div className="container mx-auto">
           <div className="navbar text-neutral-content">
             <div className="flex-1 px-2 mx-2">
-              <Link to="/" className="btn btn-ghost btn-sm rounded-btn">
+              <Link to="/" className="btn btn-ghost btn-sm rounded-btn logo">
                 <span className="text-lg font-bold normal-case">NFtalk</span>
               </Link>
             </div>

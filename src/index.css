@@ -5,4 +5,9 @@ body {
 
 .container {
   max-width: 800px;
+  padding: 0 1rem;
+}
+
+.navbar {
+  height: 80px;
 }

@@ -3,3 +3,7 @@
     flex-direction: column;
   }
 }
+
+.logo {
+  margin-left: -1rem;
+}
