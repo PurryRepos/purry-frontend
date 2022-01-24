@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 import constants from "./constants";
-import NFtalkContract from "./abi/NFtalk";
+import PurryContract from "./abi/Purry";
 import getSigner from "./getSigner";
 
 export default async function getContract() {
@@ -8,7 +8,7 @@ export default async function getContract() {
   if (!signer) return false;
   return new ethers.Contract(
     constants.CONTRACT_ADDRESS,
-    NFtalkContract.abi,
+    PurryContract.abi,
     signer
   );
 }
