@@ -15,7 +15,13 @@ export default function Header() {
         <div className="container mx-auto">
           <div className="navbar text-neutral-content">
             <div className="flex-1 px-2 mx-2">
-              <Link to="/" className="btn btn-ghost btn-sm rounded-btn logo">
+              <Link
+                to="/"
+                className="btn btn-ghost btn-sm rounded-btn logo indicator"
+              >
+                <div className="indicator-item badge badge-primary text-xs">
+                  Beta
+                </div>
                 <span className="text-lg font-bold normal-case">Purry</span>
               </Link>
             </div>
