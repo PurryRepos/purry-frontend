@@ -14,7 +14,7 @@ export default async function getSigner() {
     return false;
   }
 
-  if (chainId !== constants.CHAIN_ID) {
+  if (chainId.toString() !== constants.CHAIN_ID.toString()) {
     throw new Error("wrong-network");
   }
 
