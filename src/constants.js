@@ -1,8 +1,8 @@
 const constants = {
-  NETWORK_NAME: "Avalanche",
-  CHAIN_ID: 31337,
-  CONTRACT_ADDRESS: "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
-  GAS_PRICE: 875000000,
+  NETWORK_NAME: process.env.REACT_APP_NETWORK_NAME,
+  CHAIN_ID: process.env.REACT_APP_CHAIN_ID,
+  CONTRACT_ADDRESS: process.env.REACT_APP_CONTRACT_ADDRESS,
+  GAS_PRICE: process.env.REACT_APP_GAS_PRICE,
 };
 
 export default constants;
