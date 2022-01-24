@@ -52,7 +52,6 @@ const Message = ({ nft }) => {
     e.preventDefault();
     contract.mintReply(message, nft.tokenId, {
       gasPrice: constants.GAS_PRICE,
-      gasLimit: 9000000,
     });
   };
 
@@ -60,7 +59,6 @@ const Message = ({ nft }) => {
     e.preventDefault();
     contract.voteUpMessage(nft.tokenId, {
       gasPrice: constants.GAS_PRICE,
-      gasLimit: 9000000,
     });
   };
 

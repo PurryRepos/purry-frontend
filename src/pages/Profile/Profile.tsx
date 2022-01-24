@@ -31,10 +31,11 @@ export default function Profile() {
   }, [contract, account]);
 
   const init = async () => {
-    getUserMessages();
+    setIsMyProfile(account === address);
     getUsername();
     getUserStatus();
     getUserUpVotes();
+    await getUserMessages();
     setLoading(false);
   };
 
@@ -72,7 +73,6 @@ export default function Profile() {
   const voteUpUser = async () => {
     const _upvoteUserTrx = await contract.voteUpUser(address, {
       gasPrice: constants.GAS_PRICE,
-      gasLimit: 9000000,
     });
     const provider = await getProvider();
     if (provider) {
@@ -99,7 +99,6 @@ export default function Profile() {
     try {
       const userNameTrx = await contract.setUserName(newUserName, {
         gasPrice: constants.GAS_PRICE,
-        gasLimit: 9000000,
       });
       const provider = await getProvider();
       if (provider) {
@@ -200,24 +199,26 @@ export default function Profile() {
           </div>
         </div>
       )}
-      <div className="flex flex-row form-control">
-        <input
-          disabled={disableUsername}
-          onClick={(e) => e.preventDefault()}
-          value={newUserName}
-          onChange={(e) => setNewUserName(e.target.value)}
-          type="text"
-          placeholder={username}
-          className="input input-bordered basis-4/5 mr-3"
-        />
-        <button
-          disabled={disableUsername}
-          onClick={updateUserName}
-          className="btn btn-primary leading-4"
-        >
-          Update Username
-        </button>
-      </div>
+      {isMyProfile && (
+        <div className="flex flex-row form-control">
+          <input
+            disabled={disableUsername}
+            onClick={(e) => e.preventDefault()}
+            value={newUserName}
+            onChange={(e) => setNewUserName(e.target.value)}
+            type="text"
+            placeholder={username}
+            className="input input-bordered basis-4/5 mr-3"
+          />
+          <button
+            disabled={disableUsername}
+            onClick={updateUserName}
+            className="btn btn-primary leading-4"
+          >
+            Update Username
+          </button>
+        </div>
+      )}
       {loading ? (
         <p className="text-center mt-5">
           <b>Loading...</b>

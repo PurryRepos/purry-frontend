@@ -49,7 +49,6 @@ export default function Home() {
   const mint = async () => {
     contract.mint(message, {
       gasPrice: constants.GAS_PRICE,
-      gasLimit: 9000000,
     });
   };
 
