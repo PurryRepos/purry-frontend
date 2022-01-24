@@ -14,17 +14,16 @@ const Message = ({ nft }) => {
   const navigate = useNavigate();
   const { contract } = useContext(Web3Context);
   const [message, setMessage] = useState("");
-  const [owner, setOwner] = useState("");
-  let creationDate, userName, userStatus;
+  const [userStatus, setUserStatus] = useState(false);
+  let creationDate, author, authorWallet;
 
   useEffect(() => {
-    getOwner();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [contract]);
 
-  const getOwner = async () => {
-    const _owner = await contract.ownerOf(nft.tokenId);
-    setOwner(_owner);
+  const getUserStatus = async (address) => {
+    const _userStatus = await contract.isRegisteredUser(address);
+    setUserStatus(_userStatus);
   };
 
   nft.attributes.forEach((attr) => {
@@ -32,11 +31,12 @@ const Message = ({ nft }) => {
       case "Created":
         creationDate = attr.value;
         break;
-      case "User Name":
-        userName = attr.value;
+      case "Author":
+        author = attr.value;
         break;
-      case "User Status":
-        userStatus = attr.value === "Registered";
+      case "Author Wallet":
+        authorWallet = attr.value;
+        getUserStatus(authorWallet);
         break;
       default:
         break;
@@ -44,7 +44,9 @@ const Message = ({ nft }) => {
   });
 
   const fromNow = dayjs.unix(creationDate).fromNow();
-  userName = userStatus ? userName : truncateAddress(userName);
+  if (!userStatus) {
+    author = truncateAddress(author);
+  }
 
   const reply = async (e) => {
     e.preventDefault();
@@ -66,12 +68,12 @@ const Message = ({ nft }) => {
 
   const redirectToProfile = (e) => {
     e.preventDefault();
-    navigate(`/user/${owner}`);
+    navigate(`/user/${authorWallet}`);
   };
 
   return (
-    <Link to={`/thread/${nft.tokenId}`}>
-      <div className="flex justify-center mt-6 shadow-md hover:shadow-lg">
+    <Link to={`/thread/${nft.tokenId}`} className=" mt-6">
+      <div className="flex justify-center shadow-md hover:shadow-lg">
         <div className="flex flex-col w-full bg-white	rounded-lg p-5">
           <div className=" flex flex-col">
             <img src={nft.image} alt="" />
@@ -98,7 +100,7 @@ const Message = ({ nft }) => {
                     !userStatus ? "unregistered" : ""
                   }`}
                 >
-                  {userName}
+                  {author}
                 </span>{" "}
                 • {fromNow}
               </div>
@@ -114,7 +116,7 @@ const Message = ({ nft }) => {
               className="input input-bordered basis-4/5 mr-3"
             />
             <button onClick={reply} className="btn btn-primary basis-1/5">
-              Mint
+              Reply
             </button>
           </div>
         </div>

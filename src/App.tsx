@@ -12,8 +12,6 @@ import Footer from "./components/Footer/Footer.tsx";
 // @ts-ignore
 import Home from "./pages/Home/Home.tsx";
 // @ts-ignore
-import MyNFTs from "./pages/MyNFTs/MyNFTs.tsx";
-// @ts-ignore
 import Thread from "./pages/Thread/Thread.tsx";
 // @ts-ignore
 import Profile from "./pages/Profile/Profile.tsx";
@@ -81,7 +79,6 @@ export default function App() {
         <div className="container mx-auto">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/mynfts" element={<MyNFTs />} />
             <Route path="/thread/:tokenId" element={<Thread />} />
             <Route path="/user/:address" element={<Profile />} />
           </Routes>

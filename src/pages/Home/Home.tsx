@@ -88,7 +88,7 @@ export default function Home() {
           className="input shadow-md basis-4/5 mr-3"
         />
         <button onClick={mint} className="btn btn-primary shadow-lg basis-1/5">
-          Mint
+          Send
         </button>
       </div>
       <InfiniteScroll
