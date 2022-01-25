@@ -29,10 +29,12 @@ export default function Thread() {
   };
 
   const formatMessageIds = (threadString) => {
-    const regex = /(.)(\d)(.)/g;
+    const regex = /(.)(\d+)(.)/g;
     if (threadString.match(regex)) {
       threadString = threadString.replaceAll(regex, '$1"$2"$3');
     }
+    console.log(threadString);
+
     return getMessageIds(JSON.parse(threadString));
   };
 
