@@ -9,7 +9,7 @@ export default function Thread() {
   const tokenId = useParams().tokenId;
   const { contract, account } = useContext(Web3Context);
   const [nfts, setNfts] = useState([]);
-  const [threadMapping, setThreadMapping] = useState(null);
+  // const [threadMapping, setThreadMapping] = useState(null);
 
   useEffect(() => {
     if (contract && account && tokenId) {
@@ -37,7 +37,7 @@ export default function Thread() {
   };
 
   const getMessageIds = (_threadMapping) => {
-    setThreadMapping(_threadMapping);
+    // setThreadMapping(_threadMapping);
     const threadIs = recursiveSearch(_threadMapping);
     return threadIs;
   };
@@ -65,18 +65,8 @@ export default function Thread() {
     }, 100);
   };
 
-  const renderThread = () => {
-    // console.log(threadMapping[Object.keys(threadMapping)[0]]);
-    Object.keys(threadMapping).forEach((key, i) => {
-      const value = threadMapping[key];
-      // console.log(key, value);
-    });
-    return;
-  };
-
   return (
     <div className="flex flex-col">
-      {threadMapping && renderThread()}
       {nfts.length ? (
         nfts.map((nft, key) => (
           <Message
