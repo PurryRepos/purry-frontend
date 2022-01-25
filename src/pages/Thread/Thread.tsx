@@ -33,8 +33,6 @@ export default function Thread() {
     if (threadString.match(regex)) {
       threadString = threadString.replaceAll(regex, '$1"$2"$3');
     }
-    console.log(threadString);
-
     return getMessageIds(JSON.parse(threadString));
   };
 
