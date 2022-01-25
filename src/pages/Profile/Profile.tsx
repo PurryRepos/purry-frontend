@@ -47,7 +47,7 @@ export default function Profile() {
       let nft = await contract.tokenURI(userMessageId);
       nft = decodeBase64(nft.split(",")[1]);
       nft = JSON.parse(nft);
-      nft.tokenId = i;
+      nft.tokenId = userMessageId;
       setNfts((previousNfts) => [...previousNfts, nft]);
     });
   };
@@ -89,7 +89,7 @@ export default function Profile() {
         setTimeout(() => {
           setShowMessage(false);
           setMessage("");
-        }, 3000);
+        }, 5000);
       }
     }
   };
@@ -115,7 +115,7 @@ export default function Profile() {
           setTimeout(() => {
             setShowMessage(false);
             setMessage("");
-          }, 3000);
+          }, 5000);
         }
       }
     } catch (error) {

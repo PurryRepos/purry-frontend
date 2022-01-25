@@ -10,7 +10,7 @@ import "./Message.css";
 
 dayjs.extend(relativeTime);
 
-const Message = ({ nft }) => {
+const Message = ({ nft, ...props }) => {
   const navigate = useNavigate();
   const { contract } = useContext(Web3Context);
   const [message, setMessage] = useState("");
@@ -73,7 +73,7 @@ const Message = ({ nft }) => {
   };
 
   return (
-    <Link to={`/thread/${nft.tokenId}`} className=" mt-6">
+    <Link to={`/thread/${nft.tokenId}`} className=" mt-6" {...props}>
       <div className="flex justify-center shadow-md hover:shadow-lg">
         <div className="flex flex-col w-full bg-white	rounded-lg p-5">
           <div className=" flex flex-col">

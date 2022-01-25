@@ -5,3 +5,7 @@
 .unregistered {
   color: #adadad;
 }
+
+.active {
+  border: 10px solid #a991f7;
+}
