@@ -127,7 +127,8 @@ export default function Header() {
               d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
             ></path>{" "}
           </svg>
-          This is a Beta version, your message history may get reset.
+          This is a beta version, we are working on improvements and the message history may get reset as a result. 
+          Please feel free to send us Purrs with feature requests and suggestions!
         </div>
       </div>
     </div>
