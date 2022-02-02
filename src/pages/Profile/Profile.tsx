@@ -30,26 +30,35 @@ export default function Profile() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [contract, account]);
 
+  useEffect(() => {
+    if (address && contract && account) {
+      getUserMessages();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [address]);
+
   const init = async () => {
     setIsMyProfile(account === address);
     getUsername();
     getUserStatus();
     getUserUpVotes();
-    await getUserMessages();
-    setLoading(false);
+    getUserMessages();
   };
 
   const getUserMessages = async () => {
-    const userMessageIds = await contract.getUserMessageIds(account);
-    setNfts([]);
+    setLoading(true);
+    const userMessageIds = await contract.getUserMessageIds(address);
+    const _nfts = [];
     setTotalNfts(userMessageIds.length);
-    [...userMessageIds].reverse().forEach(async (userMessageId, i) => {
+    for (const userMessageId of [...userMessageIds].reverse()) {
       let nft = await contract.tokenURI(userMessageId);
       nft = decodeBase64(nft.split(",")[1]);
       nft = JSON.parse(nft);
       nft.tokenId = userMessageId;
-      setNfts((previousNfts) => [...previousNfts, nft]);
-    });
+      _nfts.push(nft);
+    }
+    setNfts(_nfts);
+    setLoading(false);
   };
 
   const getUsername = async () => {
