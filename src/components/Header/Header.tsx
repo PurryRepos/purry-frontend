@@ -33,7 +33,7 @@ export default function Header() {
               <div className="flex items-stretch mobile-menu">
                 {web3Context.account && (
                   <Link
-                    to={`/user/${web3Context.account}`}
+                    to={`/user/${web3Context.account.toLowerCase()}`}
                     className="btn btn-ghost btn-sm rounded-btn"
                   >
                     <svg
@@ -102,9 +102,9 @@ export default function Header() {
               className="w-6 h-6 mx-2 stroke-current"
             >
               <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
                 d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
               ></path>
             </svg>
@@ -121,14 +121,15 @@ export default function Header() {
             className="w-6 h-6 mx-2 stroke-current"
           >
             <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
               d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
             ></path>{" "}
           </svg>
-          This is a beta version, we are working on improvements and the message history may get reset as a result. 
-          Please feel free to send us Purrs with feature requests and suggestions!
+          This is a beta version, we are working on improvements and the message
+          history may get reset as a result. Please feel free to send us Purrs
+          with feature requests and suggestions!
         </div>
       </div>
     </div>
