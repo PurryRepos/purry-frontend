@@ -1,7 +1,9 @@
 import { ethers } from "ethers";
 import constants from "./constants";
-import PurryContract from "./abi/Purry";
+import PurryContract from "./abi/Purry.json";
 import getSigner from "./getSigner";
+
+// TODO: TypeChain integration
 
 export default async function getContract() {
   const signer = await getSigner();

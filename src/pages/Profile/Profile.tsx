@@ -127,7 +127,8 @@ export default function Profile() {
           }, 5000);
         }
       }
-    } catch (error) {
+    } finally {
+      setNewUserName("");
       setDisableUsername(false);
     }
   };

@@ -1,5 +1,5 @@
-export default function decodeBase64(str) {
-  var e = {},
+export default function decodeBase64(str: string) {
+  let e = {},
     i,
     b = 0,
     c,
@@ -8,8 +8,9 @@ export default function decodeBase64(str) {
     a,
     r = "",
     w = String.fromCharCode,
-    L = str.length;
-  var A = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+    L: number = str.length;
+  const A: string =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
   for (i = 0; i < 64; i++) {
     e[A.charAt(i)] = i;
   }

@@ -18,9 +18,9 @@ export default function Thread() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [contract, account, tokenId]);
 
-  const recursiveSearch = (obj, results = []) => {
+  const recursiveSearch = (obj: any, results = []): number[] => {
     const r = results;
-    Object.keys(obj).forEach((key, i) => {
+    Object.keys(obj).forEach((key: string, i: number) => {
       const value = obj[key];
       r.push(key);
       recursiveSearch(value, r);
@@ -28,7 +28,7 @@ export default function Thread() {
     return r;
   };
 
-  const formatMessageIds = (threadString) => {
+  const formatMessageIds = (threadString: string) => {
     const regex = /(.)(\d+)(.)/g;
     if (threadString.match(regex)) {
       threadString = threadString.replaceAll(regex, '$1"$2"$3');
@@ -36,7 +36,7 @@ export default function Thread() {
     return getMessageIds(JSON.parse(threadString));
   };
 
-  const getMessageIds = (_threadMapping) => {
+  const getMessageIds = (_threadMapping: any) => {
     // setThreadMapping(_threadMapping);
     const threadIs = recursiveSearch(_threadMapping);
     return threadIs;

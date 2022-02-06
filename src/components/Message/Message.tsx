@@ -10,40 +10,45 @@ import "./Message.css";
 
 dayjs.extend(relativeTime);
 
-const Message = ({ nft, ...props }) => {
+const Message = ({ nft, ...props }: any) => {
   const navigate = useNavigate();
   const { contract } = useContext(Web3Context);
   const [message, setMessage] = useState("");
   const [userStatus, setUserStatus] = useState(false);
-  let creationDate, author, authorWallet;
+  let creationDate: string, author: string, authorWallet: string;
 
   useEffect(() => {
+    init();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [contract]);
 
-  const getUserStatus = async (address) => {
-    const _userStatus = await contract.isRegisteredUser(address);
-    setUserStatus(_userStatus);
+  const init = async () => {
+    if (contract) {
+      const getUserStatus = async (address: string) => {
+        const _userStatus = await contract.isRegisteredUser(address);
+        setUserStatus(_userStatus);
+      };
+
+      nft.attributes.forEach((attr: { trait_type: string; value: string }) => {
+        switch (attr.trait_type) {
+          case "Created":
+            creationDate = attr.value;
+            break;
+          case "Author":
+            author = attr.value;
+            break;
+          case "Author Wallet":
+            authorWallet = attr.value;
+            getUserStatus(authorWallet);
+            break;
+          default:
+            break;
+        }
+      });
+    }
   };
 
-  nft.attributes.forEach((attr) => {
-    switch (attr.trait_type) {
-      case "Created":
-        creationDate = attr.value;
-        break;
-      case "Author":
-        author = attr.value;
-        break;
-      case "Author Wallet":
-        authorWallet = attr.value;
-        getUserStatus(authorWallet);
-        break;
-      default:
-        break;
-    }
-  });
-
-  const fromNow = dayjs.unix(creationDate).fromNow();
+  const fromNow = dayjs.unix(parseInt(creationDate)).fromNow();
   if (!userStatus) {
     author = truncateAddress(author);
   }

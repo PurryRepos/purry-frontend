@@ -3,8 +3,12 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import Web3Context from "../../context/Web3Context";
 import decodeBase64 from "../../utils/decodeBase64";
 import constants from "../../constants";
-// @ts-ignore
-import Message from "../../components/Message/Message.tsx";
+
+import Message from "../../components/Message/Message";
+import notification from "../../components/notification";
+
+import styles from "./Home.module.scss";
+console.log(styles);
 
 export default function Home() {
   const { contract } = useContext(Web3Context);
@@ -47,9 +51,17 @@ export default function Home() {
   }, [latestMessageId]);
 
   const mint = async () => {
-    contract.mint(message, {
-      gasPrice: constants.GAS_PRICE,
-    });
+    try {
+      await contract.mint(message, {
+        gasPrice: constants.GAS_PRICE,
+      });
+    } catch (error) {
+      notification({
+        type: "warning",
+        message: error.data.message,
+        errorCode: error.code,
+      });
+    }
   };
 
   const range = (start, end) => {
