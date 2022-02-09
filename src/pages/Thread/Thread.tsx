@@ -2,8 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Web3Context from "../../context/Web3Context";
 import decodeBase64 from "../../utils/decodeBase64";
-// @ts-ignore
-import Message from "../../components/Message/Message.tsx";
+import Message from "../../components/Message/Message";
 
 export default function Thread() {
   const tokenId = useParams().tokenId;

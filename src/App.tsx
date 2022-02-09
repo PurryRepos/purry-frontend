@@ -5,16 +5,11 @@ import constants from "./constants";
 import Web3Context from "./context/Web3Context";
 import getSigner from "./getSigner";
 import getContract from "./getContract";
-// @ts-ignore
-import Header from "./components/Header/Header.tsx";
-// @ts-ignore
-import Footer from "./components/Footer/Footer.tsx";
-// @ts-ignore
-import Home from "./pages/Home/Home.tsx";
-// @ts-ignore
-import Thread from "./pages/Thread/Thread.tsx";
-// @ts-ignore
-import Profile from "./pages/Profile/Profile.tsx";
+import Header from "./components/Header/Header";
+import Footer from "./components/Footer/Footer";
+import Home from "./pages/Home/Home";
+import Thread from "./pages/Thread/Thread";
+import Profile from "./pages/Profile/Profile";
 
 export default function App() {
   const [signer, setSigner] = useState("");

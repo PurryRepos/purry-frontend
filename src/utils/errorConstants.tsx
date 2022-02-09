@@ -21,6 +21,34 @@ interface ErrorCodes {
   };
 }
 
+const INTERNAL_ERROR_PREFIX =
+  "Error: VM Exception while processing transaction: reverted with reason string";
+
+type internalErrorMessagesType = {
+  [key: string]: string | React.ReactNode | React.FunctionComponent;
+};
+
+const errorMessages: internalErrorMessagesType = {
+  "Message too long": "Message too long (maximum 85 characters)",
+  "Only ASCII characters":
+    'Only ASCII characters are allowed. Except the following symbols: ", &, <, ',
+  "Invalid reply Id": "Invalid message id",
+  "Invalid ID": "Invalid message id",
+  "Cannot vote for yourself": "Cannot vote for yourself",
+  "Name taken": "Username already taken",
+  "Too long": "Username too long (maximum 32 characters)",
+  Unregistered:
+    "Please register to use a vote, to register: go to the profile page and set a username",
+};
+
+const internalErrorMessages: internalErrorMessagesType = {};
+
+Object.keys(errorMessages).forEach((a) => {
+  internalErrorMessages[`${INTERNAL_ERROR_PREFIX} '${a}'`] = errorMessages[a];
+});
+
+export { internalErrorMessages };
+
 export const errorCodes: ErrorCodes = {
   rpc: {
     invalidInput: -32000,
@@ -111,15 +139,4 @@ export const errorValues = {
     standard: "EIP-1193",
     message: "The provider is disconnected from the specified chain.",
   },
-};
-
-type internalErrorMessagesType = {
-  [key: string]: string | React.ReactNode | React.FunctionComponent;
-};
-
-export const internalErrorMessages: internalErrorMessagesType = {
-  "Error: VM Exception while processing transaction: reverted with reason string 'Message too long'":
-    "Message too long (maximum 85 characters)",
-  "Error: VM Exception while processing transaction: reverted with reason string 'Only ASCII characters'":
-    'Only ASCII characters are allowed. Except the following symbols: ", &, <, \\',
 };

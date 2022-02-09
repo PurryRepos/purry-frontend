@@ -1,6 +1,5 @@
 import { render } from "react-dom";
-// @ts-ignore
-import App from "./App.tsx";
+import App from "./App";
 
 import "./tailwind.css";
 import "react-notifications-component/dist/theme.css";
