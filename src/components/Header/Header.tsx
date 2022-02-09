@@ -128,9 +128,59 @@ export default function Header() {
               d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
             ></path>{" "}
           </svg>
-          This is a beta version, we are working on improvements and the message
-          history may get reset as a result. Please feel free to send us Purrs
-          with feature requests and suggestions!
+          <p>
+            You can "purr" a message below with up to 85 characters (incl.
+            spaces). Click{" "}
+            <label htmlFor="info-modal" className="link link-primary">
+              here
+            </label>{" "}
+            for further instructions.
+          </p>
+        </div>
+      </div>
+      <input type="checkbox" id="info-modal" className="modal-toggle" />
+      <div className="modal">
+        <div className="modal-box">
+          <p>
+            By sending a message, you create an NFT that shows the text of your
+            message. You can only use certain characters (all letters and
+            numbers, some special characters - ASCII standard). Any interaction
+            (sending messages, up/downvoting, setting a username etc.) should
+            open your Metamask and ask you to confirm. Once the transaction is
+            confirmed, the message (we call it a "purr") is displayed here on
+            purry.io. If Metamask is not prompted, you may have used too many or
+            non-supported characters. You can click on any message to see
+            replies. If your "purr" receives too many dislikes, it may fade
+            away!
+            <br />
+            <br />
+            If you are new to Metamask: Install the Metamask extension in your
+            browser and connect to "Rinkeby Test Network". You may need to go to
+            Metamask settings – Advanced – enable "show test networks". Get test
+            ETH for free from a faucet (
+            <a
+              href="https://faucets.chain.link/rinkeby"
+              target="_blank"
+              rel="noreferrer"
+              className="link link-primary"
+            >
+              example
+            </a>
+            ). Open purry.io and click connect.{" "}
+            <a
+              href="https://gist.github.com/tschubotz/8047d13a2d2ac8b2a9faa3a74970c7ef"
+              target="_blank"
+              rel="noreferrer"
+              className="link link-primary"
+            >
+              Here is a guide on setting up Metamask for Rinkeby.
+            </a>
+          </p>
+          <div className="modal-action">
+            <label htmlFor="info-modal" className="btn">
+              Close
+            </label>
+          </div>
         </div>
       </div>
     </div>
