@@ -2,9 +2,9 @@ import { useContext, useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Web3Context from "../../context/Web3Context";
 import decodeBase64 from "../../utils/decodeBase64";
-import constants from "../../constants";
-// @ts-ignore
-import Message from "../../components/Message/Message.tsx";
+import sendTransaction from "../../utils/sendTransaction";
+
+import Message from "../../components/Message/Message";
 
 export default function Home() {
   const { contract } = useContext(Web3Context);
@@ -47,8 +47,11 @@ export default function Home() {
   }, [latestMessageId]);
 
   const mint = async () => {
-    contract.mint(message, {
-      gasPrice: constants.GAS_PRICE,
+    sendTransaction({
+      contract,
+      method: "mint",
+      argsArray: [message],
+      gasPrice: true,
     });
   };
 
@@ -61,12 +64,8 @@ export default function Home() {
   };
 
   const init = async () => {
-    const _latestMessageId = await getLatestMessageId();
+    const _latestMessageId = await contract.getLatestMessageId();
     setLatestMessageId(_latestMessageId.toNumber());
-  };
-
-  const getLatestMessageId = async () => {
-    return await contract.getLatestMessageId();
   };
 
   const getLatestMessages = () => {

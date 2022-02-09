@@ -3,10 +3,11 @@ import { Link } from "react-router-dom";
 import Web3Context from "../../context/Web3Context";
 import truncateAddress from "../../utils/truncateAddress";
 
+import type { Web3ContextType } from "../../context/Web3Context";
 import "./Header.css";
 
 export default function Header() {
-  const web3Context = useContext(Web3Context);
+  const web3Context: Web3ContextType = useContext(Web3Context);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   return (
@@ -33,7 +34,7 @@ export default function Header() {
               <div className="flex items-stretch mobile-menu">
                 {web3Context.account && (
                   <Link
-                    to={`/user/${web3Context.account.toLowerCase()}`}
+                    to={`/user/${web3Context.account}`}
                     className="btn btn-ghost btn-sm rounded-btn"
                   >
                     <svg

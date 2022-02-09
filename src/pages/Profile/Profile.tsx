@@ -4,9 +4,10 @@ import getProvider from "../../getProvider";
 import Web3Context from "../../context/Web3Context";
 import decodeBase64 from "../../utils/decodeBase64";
 import truncateAddress from "../../utils/truncateAddress";
-import constants from "../../constants";
-// @ts-ignore
-import Message from "../../components/Message/Message.tsx";
+import sendTransaction from "../../utils/sendTransaction";
+import Message from "../../components/Message/Message";
+
+import styles from "./Profile.module.scss";
 
 export default function Profile() {
   const address = useParams().address;
@@ -80,13 +81,17 @@ export default function Profile() {
   };
 
   const voteUpUser = async () => {
-    const _upvoteUserTrx = await contract.voteUpUser(address, {
-      gasPrice: constants.GAS_PRICE,
+    if (isMyProfile) return;
+    const upvoteUserTrx = await sendTransaction({
+      contract,
+      method: "voteUpUser",
+      argsArray: [address],
+      gasPrice: true,
     });
     const provider = await getProvider();
     if (provider) {
       const _newUserName = await provider.waitForTransaction(
-        _upvoteUserTrx.hash,
+        upvoteUserTrx.hash,
         1, // confirmations
         150000 // timeout
       );
@@ -106,8 +111,11 @@ export default function Profile() {
   const updateUserName = async () => {
     setDisableUsername(true);
     try {
-      const userNameTrx = await contract.setUserName(newUserName, {
-        gasPrice: constants.GAS_PRICE,
+      const userNameTrx = await sendTransaction({
+        contract,
+        method: "setUserName",
+        argsArray: [newUserName],
+        gasPrice: true,
       });
       const provider = await getProvider();
       if (provider) {
@@ -127,7 +135,8 @@ export default function Profile() {
           }, 5000);
         }
       }
-    } catch (error) {
+    } finally {
+      setNewUserName("");
       setDisableUsername(false);
     }
   };
@@ -182,7 +191,9 @@ export default function Profile() {
             <svg
               onClick={voteUpUser}
               xmlns="http://www.w3.org/2000/svg"
-              className="inline-block w-8 h-8 stroke-current hover:cursor-pointer"
+              className={`${
+                !isMyProfile ? `${styles.bounce} hover:cursor-pointer` : ""
+              } inline-block w-8 h-8 stroke-current`}
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"

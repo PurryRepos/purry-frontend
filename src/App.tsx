@@ -1,23 +1,18 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { ReactNotifications } from "react-notifications-component";
 import constants from "./constants";
-
 import Web3Context from "./context/Web3Context";
 import getSigner from "./getSigner";
 import getContract from "./getContract";
-// @ts-ignore
-import Header from "./components/Header/Header.tsx";
-// @ts-ignore
-import Footer from "./components/Footer/Footer.tsx";
-// @ts-ignore
-import Home from "./pages/Home/Home.tsx";
-// @ts-ignore
-import Thread from "./pages/Thread/Thread.tsx";
-// @ts-ignore
-import Profile from "./pages/Profile/Profile.tsx";
+import Header from "./components/Header/Header";
+import Footer from "./components/Footer/Footer";
+import Home from "./pages/Home/Home";
+import Thread from "./pages/Thread/Thread";
+import Profile from "./pages/Profile/Profile";
 
 export default function App() {
-  const [signer, setSigner] = useState(null);
+  const [signer, setSigner] = useState("");
   const [account, setAccount] = useState("");
   const [contract, setContract] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
@@ -26,7 +21,7 @@ export default function App() {
   useEffect(() => {
     const initSignerAndContract = async () => {
       activateBrowserWallet();
-      const _contract = await getContract();
+      const _contract: any = await getContract();
       if (_contract) {
         setContract(_contract);
       } else {
@@ -42,7 +37,7 @@ export default function App() {
     try {
       _signer = await getSigner();
       setSigner(_signer);
-    } catch (error) {
+    } catch (error: any) {
       switch (error.toString()) {
         case "Error: metamask-not-found":
           setErrorMessage(
@@ -67,7 +62,7 @@ export default function App() {
     <Web3Context.Provider
       value={{
         signer,
-        account,
+        account: account.toLowerCase(),
         contract,
         errorMessage,
         showErrorMessage,
@@ -75,6 +70,7 @@ export default function App() {
       }}
     >
       <BrowserRouter>
+        <ReactNotifications />
         <Header />
         <div className="container mx-auto">
           <Routes>

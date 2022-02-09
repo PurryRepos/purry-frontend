@@ -4,67 +4,83 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Web3Context from "../../context/Web3Context";
 import truncateAddress from "../../utils/truncateAddress";
-import constants from "../../constants";
+import sendTransaction from "../../utils/sendTransaction";
 
 import "./Message.css";
 
 dayjs.extend(relativeTime);
 
-const Message = ({ nft, ...props }) => {
+const Message = ({ nft, ...props }: any) => {
   const navigate = useNavigate();
   const { contract } = useContext(Web3Context);
   const [message, setMessage] = useState("");
+  const [creationDate, setCreationDate] = useState("");
+  const [author, setAuthor] = useState("");
+  const [authorWallet, setAuthorWallet] = useState("");
   const [userStatus, setUserStatus] = useState(false);
-  let creationDate, author, authorWallet;
 
   useEffect(() => {
+    init();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [contract]);
 
-  const getUserStatus = async (address) => {
-    const _userStatus = await contract.isRegisteredUser(address);
-    setUserStatus(_userStatus);
-  };
-
-  nft.attributes.forEach((attr) => {
-    switch (attr.trait_type) {
-      case "Created":
-        creationDate = attr.value;
-        break;
-      case "Author":
-        author = attr.value;
-        break;
-      case "Author Wallet":
-        authorWallet = attr.value;
-        getUserStatus(authorWallet);
-        break;
-      default:
-        break;
+  const init = async () => {
+    if (contract) {
+      let _author, _authorWallet;
+      nft.attributes.forEach((attr: { trait_type: string; value: any }) => {
+        switch (attr.trait_type) {
+          case "Created":
+            const fromNow = dayjs.unix(parseInt(attr.value)).fromNow();
+            setCreationDate(fromNow);
+            break;
+          case "Author":
+            _author = attr.value;
+            break;
+          case "Author Wallet":
+            _authorWallet = attr.value;
+            setAuthorWallet(_authorWallet);
+            break;
+          default:
+            break;
+        }
+      });
+      if (_authorWallet === _author) {
+        setAuthor(truncateAddress(_author));
+      } else {
+        setAuthor(_author);
+        setUserStatus(true);
+      }
     }
-  });
-
-  const fromNow = dayjs.unix(creationDate).fromNow();
-  if (!userStatus) {
-    author = truncateAddress(author);
-  }
+  };
 
   const reply = async (e) => {
     e.preventDefault();
-    contract.mintReply(message, nft.tokenId, {
-      gasPrice: constants.GAS_PRICE,
+    sendTransaction({
+      contract,
+      method: "mintReply",
+      argsArray: [message, nft.tokenId],
+      gasPrice: true,
     });
   };
 
   const voteUp = async (e) => {
     e.preventDefault();
-    contract.voteUpMessage(nft.tokenId, {
-      gasPrice: constants.GAS_PRICE,
+    sendTransaction({
+      contract,
+      method: "voteUpMessage",
+      argsArray: [nft.tokenId],
+      gasPrice: true,
     });
   };
 
   const voteDown = async (e) => {
     e.preventDefault();
-    contract.voteDownMessage(nft.tokenId);
+    sendTransaction({
+      contract,
+      method: "voteDownMessage",
+      argsArray: [nft.tokenId],
+      gasPrice: true,
+    });
   };
 
   const redirectToProfile = (e) => {
@@ -103,7 +119,7 @@ const Message = ({ nft, ...props }) => {
                 >
                   {author}
                 </span>{" "}
-                • {fromNow}
+                • {creationDate}
               </div>
             </div>
           </div>
