@@ -31,7 +31,11 @@ type internalErrorMessagesType = {
 const errorMessages: internalErrorMessagesType = {
   "Message too long": "Message too long (maximum 85 characters)",
   "Only ASCII characters":
-    'Illegal character! Only ASCII (standard latin and special) characters allowed, minus the symbols " & < ',
+    'Illegal character! Only ASCII (standard latin and special) characters allowed, minus the symbols " & < \\',
+  "Only printable characters":
+    'Illegal character! Only ASCII (standard latin and special) characters allowed, minus the symbols " & < \\',
+  "Illegal character":
+    'Illegal character! Only ASCII (standard latin and special) characters allowed, minus the symbols " & < \\',
   "Invalid reply Id": "Invalid message id",
   "Invalid ID": "Invalid message id",
   "Cannot vote for yourself": "Cannot vote for yourself!",
