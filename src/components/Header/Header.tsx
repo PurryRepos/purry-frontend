@@ -130,9 +130,9 @@ export default function Header() {
           </svg>
           <p>
             You can "purr" a message below with up to 85 characters (incl.
-            spaces). Click{" "}
+            spaces). {" "}
             <label htmlFor="info-modal" className="link link-primary">
-              here
+              Click here
             </label>{" "}
             for further instructions.
           </p>
@@ -173,8 +173,9 @@ export default function Header() {
               rel="noreferrer"
               className="link link-primary"
             >
-              Here is a guide on setting up Metamask for Rinkeby.
+              Here 
             </a>
+            {" "} is a guide on setting up Metamask for Rinkeby.
           </p>
           <div className="modal-action">
             <label htmlFor="info-modal" className="btn">
