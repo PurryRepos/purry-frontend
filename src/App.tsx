@@ -48,6 +48,9 @@ export default function App() {
           setErrorMessage(`Please switch to ${constants.NETWORK_NAME} network`);
           break;
         default:
+          setErrorMessage(
+            "Please install MetaMask to interact with application"
+          );
           break;
       }
       setShowErrorMessage(true);
