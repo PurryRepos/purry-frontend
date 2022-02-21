@@ -32,10 +32,10 @@ export default async function sendTransaction({
       message = error.data.message;
       errorCode = error.data.code;
     } else {
-      message = error.message.replace(
-        'sending a transaction requires a signer (operation="sendTransaction", code=UNSUPPORTED_OPERATION, version=contracts/5.5.0)',
-        "Please install MetaMask to interact with application"
-      );
+      message = error.message;
+      if (error.message.startsWith("sending a transaction requires a signer")) {
+        message = "Please install MetaMask to interact with application";
+      }
       errorCode = error.code;
     }
 
