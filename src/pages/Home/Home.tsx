@@ -93,11 +93,7 @@ export default function Home() {
         dataLength={limit * page} //This is important field to render the next data
         next={getLatestMessages}
         hasMore={hasMore}
-        loader={
-          <p className="text-center">
-            <b>Loading...</b>
-          </p>
-        }
+        loader={<p className="text-center">{/* <b>Loading...</b> */}</p>}
         endMessage={
           <p className="text-center">
             {/* <b>Yay! You have seen it all</b> */}

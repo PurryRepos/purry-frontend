@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import getProvider from "../../getProvider";
+import getProvider from "../../utils/getProvider";
 import Web3Context from "../../context/Web3Context";
 import decodeBase64 from "../../utils/decodeBase64";
 import truncateAddress from "../../utils/truncateAddress";
@@ -82,7 +82,7 @@ export default function Profile() {
 
   const voteUpUser = async () => {
     if (isMyProfile) return;
-    const upvoteUserTrx = await sendTransaction({
+    const upvoteUserTrx: any = await sendTransaction({
       contract,
       method: "voteUpUser",
       argsArray: [address],
@@ -111,7 +111,7 @@ export default function Profile() {
   const updateUserName = async () => {
     setDisableUsername(true);
     try {
-      const userNameTrx = await sendTransaction({
+      const userNameTrx: any = await sendTransaction({
         contract,
         method: "setUserName",
         argsArray: [newUserName],
