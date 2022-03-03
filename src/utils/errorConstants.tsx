@@ -1,3 +1,5 @@
+import constants from "../constants";
+
 interface ErrorCodes {
   readonly rpc: {
     readonly invalidInput: -32000;
@@ -20,9 +22,6 @@ interface ErrorCodes {
     readonly chainDisconnected: 4901;
   };
 }
-
-const INTERNAL_ERROR_PREFIX =
-  "Error: VM Exception while processing transaction: reverted with reason string";
 
 type internalErrorMessagesType = {
   [key: string]: string | React.ReactNode | React.FunctionComponent;
@@ -47,8 +46,15 @@ const errorMessages: internalErrorMessagesType = {
 
 const internalErrorMessages: internalErrorMessagesType = {};
 
-Object.keys(errorMessages).forEach((a) => {
-  internalErrorMessages[`${INTERNAL_ERROR_PREFIX} '${a}'`] = errorMessages[a];
+const INTERNAL_ERROR_PREFIX = {
+  "4": (message) => `execution reverted: ${message}`,
+  "31337": (message) =>
+    `Error: VM Exception while processing transaction: reverted with reason string '${message}'`,
+};
+
+Object.keys(errorMessages).forEach(async (message) => {
+  internalErrorMessages[INTERNAL_ERROR_PREFIX[constants.CHAIN_ID](message)] =
+    errorMessages[message];
 });
 
 export { internalErrorMessages };

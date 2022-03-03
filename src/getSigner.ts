@@ -1,4 +1,4 @@
-import getProvider from "./getProvider";
+import getProvider from "./utils/getProvider";
 
 export default async function getSigner() {
   const provider: any = await getProvider();

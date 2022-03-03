@@ -41,13 +41,16 @@ export default function App() {
       switch (error.toString()) {
         case "Error: metamask-not-found":
           setErrorMessage(
-            "Please install MetaMask to interact with application"
+            "Please install MetaMask to interact with the application"
           );
           break;
         case "Error: wrong-network":
           setErrorMessage(`Please switch to ${constants.NETWORK_NAME} network`);
           break;
         default:
+          setErrorMessage(
+            "Please install MetaMask to interact with the application"
+          );
           break;
       }
       setShowErrorMessage(true);
