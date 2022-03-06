@@ -15,6 +15,13 @@ export default async function sendTransaction({
   argsArray,
   gasPrice,
 }: TransactionType) {
+  if (!contract) {
+    return notification({
+      type: "warning",
+      message: "Please install MetaMask to interact with the application",
+    });
+  }
+
   try {
     let args = argsArray;
     if (gasPrice) {
