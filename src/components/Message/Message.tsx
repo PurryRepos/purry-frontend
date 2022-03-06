@@ -6,7 +6,7 @@ import Web3Context from "../../context/Web3Context";
 import truncateAddress from "../../utils/truncateAddress";
 import sendTransaction from "../../utils/sendTransaction";
 
-import "./Message.css";
+import styles from "./Message.module.scss";
 
 dayjs.extend(relativeTime);
 
@@ -89,12 +89,20 @@ const Message = ({ nft, ...props }: any) => {
   };
 
   return (
-    <Link to={`/thread/${nft.tokenId}`} className=" mt-6" {...props}>
+    <Link
+      to={`/thread/${nft.tokenId}`}
+      className={`mt-6 ${styles.disableUserSelect}`}
+      {...props}
+    >
       <div className="flex justify-center shadow-md hover:shadow-lg">
         <div className="flex flex-col w-full bg-white	rounded-lg p-5">
           <div className=" flex flex-col">
-            <img src={nft.image} alt="" />
-            <div className="flex flex-row justify-between items-center message-info mt-3 mb-3">
+            <img
+              src={nft.image}
+              className={styles.disableUserSelect}
+              alt="Purry NFT"
+            />
+            <div className="flex flex-row justify-between items-center mt-3 mb-3">
               <div>
                 <span
                   onClick={(e) => voteUp(e)}
@@ -109,12 +117,12 @@ const Message = ({ nft, ...props }: any) => {
                   👎
                 </span>
               </div>
-              <div>
+              <div className={styles.messageInfo}>
                 Posted by:{" "}
                 <span
                   onClick={(e) => redirectToProfile(e)}
                   className={`hover:underline ${
-                    !userStatus ? "unregistered" : ""
+                    !userStatus ? styles.unregistered : ""
                   }`}
                 >
                   {author}

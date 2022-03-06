@@ -4,6 +4,8 @@ import Web3Context from "../../context/Web3Context";
 import decodeBase64 from "../../utils/decodeBase64";
 import Message from "../../components/Message/Message";
 
+import styles from "../../components/Message/Message.module.scss";
+
 export default function Thread() {
   const tokenId = useParams().tokenId;
   const { contract, account } = useContext(Web3Context);
@@ -60,7 +62,7 @@ export default function Thread() {
         behavior: element ? "smooth" : "auto",
         top: element ? element.offsetTop - 20 : 0,
       });
-      element.classList.add("active");
+      element.classList.add(styles.active);
     }, 100);
   };
 
