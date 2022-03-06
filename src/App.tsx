@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ReactNotifications } from "react-notifications-component";
 import constants from "./constants";
 import Web3Context from "./context/Web3Context";
+import getProvider from "./utils/getProvider";
 import getSigner from "./getSigner";
 import getContract from "./getContract";
 import Header from "./components/Header/Header";
@@ -12,6 +13,7 @@ import Thread from "./pages/Thread/Thread";
 import Profile from "./pages/Profile/Profile";
 
 export default function App() {
+  const [provider, setProvider] = useState(null);
   const [signer, setSigner] = useState("");
   const [account, setAccount] = useState("");
   const [contract, setContract] = useState(null);
@@ -20,8 +22,12 @@ export default function App() {
 
   useEffect(() => {
     const initSignerAndContract = async () => {
-      activateBrowserWallet();
-      const _contract: any = await getContract();
+      const _provider = await getProvider();
+      setProvider(_provider);
+      const _contract: any = await getContract(_provider);
+      if (!_provider.isInfura) {
+        activateBrowserWallet(_provider);
+      }
       if (_contract) {
         setContract(_contract);
       } else {
@@ -32,11 +38,14 @@ export default function App() {
     initSignerAndContract();
   }, []);
 
-  const activateBrowserWallet = async () => {
-    let _signer;
+  const activateBrowserWallet = async (_provider) => {
     try {
-      _signer = await getSigner();
+      const _signer = await getSigner(_provider);
       setSigner(_signer);
+      if (_signer && !_signer.isInfura) {
+        const _account = await _signer.getAddress();
+        setAccount(_account);
+      }
     } catch (error: any) {
       switch (error.toString()) {
         case "Error: metamask-not-found":
@@ -57,13 +66,12 @@ export default function App() {
       return;
     }
     setShowErrorMessage(false);
-    const _account = await _signer.getAddress();
-    setAccount(_account);
   };
 
   return (
     <Web3Context.Provider
       value={{
+        provider,
         signer,
         account: account.toLowerCase(),
         contract,

@@ -2,18 +2,15 @@ import { ethers } from "ethers";
 import constants from "./constants";
 import PurryContract from "./abi/Purry.json";
 import getSigner from "./getSigner";
-import getProvider from "./utils/getProvider";
 
 // TODO: TypeChain integration
 
-declare var window: any;
-
-export default async function getContract() {
+export default async function getContract(provider) {
   let signer;
-  if (window.ethereum) {
-    signer = await getSigner();
+  if (provider.isInfura) {
+    signer = provider;
   } else {
-    signer = await getProvider();
+    signer = await getSigner(provider);
   }
   if (!signer) return false;
   return new ethers.Contract(

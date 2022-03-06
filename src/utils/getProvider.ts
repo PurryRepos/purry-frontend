@@ -8,10 +8,7 @@ export default async function getProvider() {
   if (window.ethereum) {
     provider = new ethers.providers.Web3Provider(window.ethereum, "any");
   } else {
-    provider = new ethers.providers.InfuraProvider(
-      "rinkeby",
-      process.env.REACT_APP_INFURA_ID
-    );
+    provider = getInfuraProvider();
   }
   const network = await provider.getNetwork();
   const chainId = network.chainId;
@@ -20,5 +17,20 @@ export default async function getProvider() {
     throw new Error("wrong-network");
   }
 
+  try {
+    await provider.send("eth_requestAccounts", []);
+  } catch (error) {
+    provider = getInfuraProvider();
+  }
+
   return await provider;
 }
+
+const getInfuraProvider = () => {
+  const provider: any = new ethers.providers.InfuraProvider(
+    "rinkeby",
+    process.env.REACT_APP_INFURA_ID
+  );
+  provider.isInfura = true;
+  return provider;
+};

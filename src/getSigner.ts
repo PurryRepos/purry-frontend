@@ -1,7 +1,7 @@
-import getProvider from "./utils/getProvider";
-
-export default async function getSigner() {
-  const provider: any = await getProvider();
-  await provider.send("eth_requestAccounts", []);
-  return provider.getSigner();
+export default async function getSigner(provider) {
+  if (provider.isInfura) {
+    return provider;
+  } else {
+    return await provider.getSigner();
+  }
 }
