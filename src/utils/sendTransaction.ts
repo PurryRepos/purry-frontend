@@ -34,7 +34,7 @@ export default async function sendTransaction({
     } else {
       message = error.message;
       if (error.message.startsWith("sending a transaction requires a signer")) {
-        message = "Please install MetaMask to interact with application";
+        message = "Please install MetaMask to interact with the application";
       }
       errorCode = error.code;
     }
