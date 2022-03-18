@@ -1,4 +1,5 @@
 import constants from "../constants";
+import { CHAIN_IDS } from "../utils/getNetwork";
 
 interface ErrorCodes {
   readonly rpc: {
@@ -47,8 +48,9 @@ const errorMessages: internalErrorMessagesType = {
 const internalErrorMessages: internalErrorMessagesType = {};
 
 const INTERNAL_ERROR_PREFIX = {
-  "4": (message) => `execution reverted: ${message}`,
-  "31337": (message) =>
+  [CHAIN_IDS.rinkeby]: (message) => `execution reverted: ${message}`,
+  [CHAIN_IDS.fuji]: (message) => `execution reverted: ${message}`,
+  [CHAIN_IDS.localhost]: (message) =>
     `Error: VM Exception while processing transaction: reverted with reason string '${message}'`,
 };
 
