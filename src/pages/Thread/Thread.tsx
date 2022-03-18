@@ -4,18 +4,20 @@ import Web3Context from "../../context/Web3Context";
 import decodeBase64 from "../../utils/decodeBase64";
 import Message from "../../components/Message/Message";
 
+import styles from "../../components/Message/Message.module.scss";
+
 export default function Thread() {
   const tokenId = useParams().tokenId;
-  const { contract, account } = useContext(Web3Context);
+  const { contract } = useContext(Web3Context);
   const [nfts, setNfts] = useState([]);
   // const [threadMapping, setThreadMapping] = useState(null);
 
   useEffect(() => {
-    if (contract && account && tokenId) {
+    if (contract && tokenId) {
       getThread();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [contract, account, tokenId]);
+  }, [contract, tokenId]);
 
   const recursiveSearch = (obj: any, results = []): number[] => {
     const r = results;
@@ -46,21 +48,26 @@ export default function Thread() {
     const messageIds = formatMessageIds(threadString);
 
     setNfts([]);
-    messageIds.forEach(async (userMessageId, i) => {
-      let nft = await contract.tokenURI(userMessageId);
+    const promises = [];
+    for (let i = 0; i < messageIds.length; ++i) {
+      promises.push(contract.tokenURI(messageIds[i]));
+    }
+    const messages = await Promise.all(promises);
+
+    messages.forEach((nft, i) => {
       nft = decodeBase64(nft.split(",")[1]);
       nft = JSON.parse(nft);
-      nft.tokenId = userMessageId;
+      nft.tokenId = messageIds[i];
       setNfts((previousNfts) => [...previousNfts, nft]);
     });
 
+    const element = document.getElementById(`message-${tokenId}`);
     setTimeout(() => {
-      const element = document.getElementById(`message-${tokenId}`);
       window.scrollTo({
         behavior: element ? "smooth" : "auto",
         top: element ? element.offsetTop - 20 : 0,
       });
-      element.classList.add("active");
+      element && element.classList.add(styles.active);
     }, 100);
   };
 
@@ -76,7 +83,7 @@ export default function Thread() {
         ))
       ) : (
         <p className="text-center mt-5">
-          <b>You don't have an NFT yet</b>
+          <b>Loading...</b>
         </p>
       )}
     </div>

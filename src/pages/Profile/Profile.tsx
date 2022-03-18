@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import getProvider from "../../utils/getProvider";
 import Web3Context from "../../context/Web3Context";
 import decodeBase64 from "../../utils/decodeBase64";
 import truncateAddress from "../../utils/truncateAddress";
@@ -11,7 +10,7 @@ import styles from "./Profile.module.scss";
 
 export default function Profile() {
   const address = useParams().address;
-  const { contract, account } = useContext(Web3Context);
+  const { provider, contract, account } = useContext(Web3Context);
   const [loading, setLoading] = useState(true);
   const [disableUsername, setDisableUsername] = useState(false);
   const [nfts, setNfts] = useState([]);
@@ -25,40 +24,44 @@ export default function Profile() {
   const [isMyProfile, setIsMyProfile] = useState(false);
 
   useEffect(() => {
-    if (contract && account) {
+    if (contract) {
       init();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [contract, account]);
+  }, [contract]);
 
   useEffect(() => {
-    if (address && contract && account) {
+    if (address && contract) {
       getUserMessages();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [address]);
+  }, [address, contract]);
 
   const init = async () => {
     setIsMyProfile(account === address);
     getUsername();
     getUserStatus();
     getUserUpVotes();
-    getUserMessages();
   };
 
   const getUserMessages = async () => {
     setLoading(true);
     const userMessageIds = await contract.getUserMessageIds(address);
-    const _nfts = [];
     setTotalNfts(userMessageIds.length);
-    for (const userMessageId of [...userMessageIds].reverse()) {
-      let nft = await contract.tokenURI(userMessageId);
+
+    setNfts([]);
+    const promises = [];
+    for (let i = userMessageIds.length - 1; i >= 0; --i) {
+      promises.push(contract.tokenURI(userMessageIds[i]));
+    }
+    const messages = await Promise.all(promises);
+
+    messages.forEach((nft, i) => {
       nft = decodeBase64(nft.split(",")[1]);
       nft = JSON.parse(nft);
-      nft.tokenId = userMessageId;
-      _nfts.push(nft);
-    }
-    setNfts(_nfts);
+      nft.tokenId = userMessageIds[i];
+      setNfts((previousNfts) => [...previousNfts, nft]);
+    });
     setLoading(false);
   };
 
@@ -88,7 +91,6 @@ export default function Profile() {
       argsArray: [address],
       gasPrice: true,
     });
-    const provider = await getProvider();
     if (provider) {
       const _newUserName = await provider.waitForTransaction(
         upvoteUserTrx.hash,
@@ -117,7 +119,6 @@ export default function Profile() {
         argsArray: [newUserName],
         gasPrice: true,
       });
-      const provider = await getProvider();
       if (provider) {
         const _newUserName = await provider.waitForTransaction(
           userNameTrx.hash,
