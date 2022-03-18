@@ -1,5 +1,5 @@
 import constants from "../constants";
-import { isRinkebyNetwork, isLocalNetwork } from "./getNetwork";
+import { isRinkebyNetwork, isFujiNetwork, isLocalNetwork } from "./getNetwork";
 import notification from "../components/notification";
 
 type TransactionType = {
@@ -28,7 +28,7 @@ export default async function sendTransaction({
     if (isRinkebyNetwork() && error.error) {
       message = error.error.message;
       errorCode = error.error.code;
-    } else if (isLocalNetwork() && error.data) {
+    } else if ((isLocalNetwork() || isFujiNetwork()) && error.data) {
       message = error.data.message;
       errorCode = error.data.code;
     } else {
