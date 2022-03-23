@@ -157,27 +157,25 @@ export default function Header() {
             <br />
             <br />
             If you are new to Metamask: Install the Metamask extension in your
-            browser and connect to "Rinkeby Test Network". You may need to go to
-            Metamask settings – Advanced – enable "show test networks". Get test
-            ETH for free from a faucet (
+            browser and add the Avalanche Fuji Testnet, e.g. by going to {" "}
             <a
-              href="https://faucets.chain.link/rinkeby"
+              href="https://chainlist.org/"
               target="_blank"
               rel="noreferrer"
               className="link link-primary"
             >
-              example
+              chainlist.org
+            </a>: click "Connect Wallet", switch on the toggle "Testnets" 
+            and search for Fuji. Get test AVAX for free from a {" "}
+            <a
+              href="https://faucet.avax-test.network/"
+              target="_blank"
+              rel="noreferrer"
+              className="link link-primary"
+            >
+              faucet
             </a>
-            ). Open purry.io and click connect.{" "}
-            <a
-              href="https://gist.github.com/tschubotz/8047d13a2d2ac8b2a9faa3a74970c7ef"
-              target="_blank"
-              rel="noreferrer"
-              className="link link-primary"
-            >
-              Here
-            </a>{" "}
-            is a guide on setting up Metamask for Rinkeby.
+            . Once you have Test AVAX you can start using Purry by clicking "Connect Wallet".
           </p>
           <div className="modal-action">
             <label htmlFor="info-modal" className="btn">
