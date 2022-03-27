@@ -146,7 +146,7 @@ export default function Header() {
           <p>
             To get started, you need to add the Purry Subnet to your Metamask. 
             In the network selection, click add network, then add the following RPC URL {" "}
-            <em>http://ec2-3-226-213-155.compute-1.amazonaws.com:33173/ext/bc/2fspKNYJ5kUifKpqoaUjHXKFhMtSWAnt8NuLmgv4uLhC7sudbk/rpc</em>
+            <em>http://ec2-3-226-213-155.compute-1.amazonaws.com:35271/ext/bc/gdHh9wxuY5YZiuxpk<br />vVacYmh7Sbg9J4pwTo93fuhyNmH3qQwM/rpc</em>
             and as Chain ID 99999. Select a network name and currency symbol
             that you like, eg PurrySubnet and PURR. We will build a faucet soon, right now you need to add 
             the pre-funded account (under Import Account), paste the private key {" "}
