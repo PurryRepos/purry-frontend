@@ -150,7 +150,7 @@ export default function Header() {
             and as Chain ID 99999. Select a network name and currency symbol
             that you like, eg PurrySubnet and PURR. We will build a faucet soon, right now you need to add 
             the pre-funded account (under Import Account), paste the private key {" "}
-            <em>56289e99c94b6912bfc12adc093c9b51124f0dc54ac7a766b2bc5ccf558d8027</em>
+            <em>56289e99c94b6912bfc12adc093c9b51124f0dc54ac7a766b2bc5ccf<br />558d8027</em>
 
             <br />
             <br />
