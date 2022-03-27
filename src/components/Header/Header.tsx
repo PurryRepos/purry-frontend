@@ -145,10 +145,13 @@ export default function Header() {
         <div className="modal-box">
           <p>
             To get started, you need to add the Purry Subnet to your Metamask. 
-            In the network selection, click add network, then add as RPC URL:
+            In the network selection, click add network, then add the following RPC URL {" "}
             <em>http://ec2-3-226-213-155.compute-1.amazonaws.com:33173/ext/bc/2fspKNYJ5kUifKpqoaUjHXKFhMtSWAnt8NuLmgv4uLhC7sudbk/rpc</em>
             and as Chain ID 99999. Select a network name and currency symbol
-            that you like, eg PurrySubnet and PURR.
+            that you like, eg PurrySubnet and PURR. We will build a faucet soon, right now you need to add 
+            the pre-funded account (under Import Account), paste the private key {" "}
+            <em>56289e99c94b6912bfc12adc093c9b51124f0dc54ac7a766b2bc5ccf558d8027</em>
+
             <br />
             <br />
             By sending a message, you create an NFT that shows the text of your
