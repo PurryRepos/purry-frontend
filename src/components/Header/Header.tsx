@@ -144,6 +144,13 @@ export default function Header() {
       <div className="modal">
         <div className="modal-box">
           <p>
+            To get started, you need to add the Purry Subnet to your Metamask. 
+            In the network selection, click add network, then add as RPC URL:
+            <em>http://ec2-3-226-213-155.compute-1.amazonaws.com:33173/ext/bc/2fspKNYJ5kUifKpqoaUjHXKFhMtSWAnt8NuLmgv4uLhC7sudbk/rpc</em>
+            and as Chain ID 99999. Select a network name and currency symbol
+            that you like, eg PurrySubnet and PURR.
+            <br />
+            <br />
             By sending a message, you create an NFT that shows the text of your
             message. You can only use certain characters (all letters and
             numbers, some special characters - ASCII standard). Any interaction
@@ -154,28 +161,7 @@ export default function Header() {
             non-supported characters. You can click on any message to see
             replies. If your "purr" receives too many dislikes, it may fade
             away!
-            <br />
-            <br />
-            If you are new to Metamask: Install the Metamask extension in your
-            browser and add the Avalanche Fuji Testnet, e.g. by going to {" "}
-            <a
-              href="https://chainlist.org/"
-              target="_blank"
-              rel="noreferrer"
-              className="link link-primary"
-            >
-              chainlist.org
-            </a>: click "Connect Wallet", switch on the toggle "Testnets" 
-            and search for Fuji. Get test AVAX for free from a {" "}
-            <a
-              href="https://faucet.avax-test.network/"
-              target="_blank"
-              rel="noreferrer"
-              className="link link-primary"
-            >
-              faucet
-            </a>
-            . Once you have Test AVAX you can start using Purry by clicking "Connect Wallet".
+            
           </p>
           <div className="modal-action">
             <label htmlFor="info-modal" className="btn">
