@@ -157,7 +157,7 @@ export default function Header() {
             <br />
             <br />
             If you are new to Metamask: Install the Metamask extension in your
-            browser and add the Avalanche Fuji Testnet, e.g. by going to {" "}
+            browser and add the Polygon Mumbai Testnet, e.g. by going to {" "}
             <a
               href="https://chainlist.org/"
               target="_blank"
@@ -166,16 +166,16 @@ export default function Header() {
             >
               chainlist.org
             </a>: click "Connect Wallet", switch on the toggle "Testnets" 
-            and search for Fuji. Get test AVAX for free from a {" "}
+            and search for Mumbai. Get test MATIC for free from a {" "}
             <a
-              href="https://faucet.avax-test.network/"
+              href="https://faucet.polygon.technology/"
               target="_blank"
               rel="noreferrer"
               className="link link-primary"
             >
               faucet
             </a>
-            . Once you have Test AVAX you can start using Purry by clicking "Connect Wallet".
+            . Once you have Test MATIC you can start using Purry by clicking "Connect Wallet".
           </p>
           <div className="modal-action">
             <label htmlFor="info-modal" className="btn">
