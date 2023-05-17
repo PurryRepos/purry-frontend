@@ -1,14 +1,52 @@
 import { useState, useContext } from "react";
 import { Link } from "react-router-dom";
+import { ethers } from "ethers";
+
 import Web3Context from "../../context/Web3Context";
 import truncateAddress from "../../utils/truncateAddress";
+import constants from "../../constants";
 
 import type { Web3ContextType } from "../../context/Web3Context";
+
 import "./Header.css";
 
 export default function Header() {
   const web3Context: Web3ContextType = useContext(Web3Context);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+
+  const switchNetwork = async () => {
+    if (window.ethereum.networkVersion !== constants.CHAIN_ID) {
+      try {
+        await window.ethereum.request({
+          method: "wallet_switchEthereumChain",
+          params: [
+            { chainId: ethers.utils.hexlify(parseInt(constants.CHAIN_ID)) },
+          ],
+        });
+        window.location.reload();
+      } catch (err) {
+        // This error code indicates that the chain has not been added to MetaMask
+        if (err.code === 4902) {
+          await window.ethereum.request({
+            method: "wallet_addEthereumChain",
+            params: [
+              {
+                chainName: "Avalanche Fuji Testnet",
+                chainId: ethers.utils.hexlify(parseInt(constants.CHAIN_ID)),
+                nativeCurrency: {
+                  name: "AVAX",
+                  decimals: 18,
+                  symbol: "AVAX",
+                },
+                rpcUrls: ["https://api.avax-test.network/ext/bc/C/rpc"],
+              },
+            ],
+          });
+          window.location.reload();
+        }
+      }
+    }
+  };
 
   return (
     <div>
@@ -57,18 +95,30 @@ export default function Header() {
               </div>
             </div>
             <div className="px-2 mx-2">
-              {!web3Context.account ? (
-                <button
-                  onClick={web3Context.activateBrowserWallet}
-                  className="btn btn-ghost btn-sm rounded-btn"
-                >
-                  Connect Wallet
-                </button>
-              ) : (
-                <p className="header-wallet">
-                  {truncateAddress(web3Context.account)}
-                </p>
-              )}
+              {window.ethereum &&
+                window.ethereum?.networkVersion !== constants.CHAIN_ID && (
+                  <button
+                    onClick={switchNetwork}
+                    className="btn btn-ghost btn-sm rounded-btn"
+                  >
+                    Switch to {constants.NETWORK_NAME} Network
+                  </button>
+                )}
+              {window.ethereum?.networkVersion !== constants.CHAIN_ID &&
+                !web3Context.account && (
+                  <button
+                    onClick={web3Context.activateBrowserWallet}
+                    className="btn btn-ghost btn-sm rounded-btn"
+                  >
+                    Connect Wallet
+                  </button>
+                )}
+              {window.ethereum?.networkVersion === constants.CHAIN_ID &&
+                web3Context.account && (
+                  <p className="header-wallet">
+                    {truncateAddress(web3Context.account)}
+                  </p>
+                )}
             </div>
             <div className="lg:hidden">
               <button
@@ -157,7 +207,7 @@ export default function Header() {
             <br />
             <br />
             If you are new to Metamask: Install the Metamask extension in your
-            browser and add the Avalanche Fuji Testnet, e.g. by going to {" "}
+            browser and add the Avalanche Fuji Testnet, e.g. by going to{" "}
             <a
               href="https://chainlist.org/"
               target="_blank"
@@ -165,8 +215,9 @@ export default function Header() {
               className="link link-primary"
             >
               chainlist.org
-            </a>: click "Connect Wallet", switch on the toggle "Testnets" 
-            and search for Fuji. Get test AVAX for free from a {" "}
+            </a>
+            : click "Connect Wallet", switch on the toggle "Testnets" and search
+            for Fuji. Get test AVAX for free from a{" "}
             <a
               href="https://faucet.avax-test.network/"
               target="_blank"
@@ -175,7 +226,8 @@ export default function Header() {
             >
               faucet
             </a>
-            . Once you have Test AVAX you can start using Purry by clicking "Connect Wallet".
+            . Once you have Test AVAX you can start using Purry by clicking
+            "Connect Wallet".
           </p>
           <div className="modal-action">
             <label htmlFor="info-modal" className="btn">

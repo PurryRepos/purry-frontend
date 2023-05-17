@@ -5,6 +5,7 @@ import decodeBase64 from "../../utils/decodeBase64";
 import sendTransaction from "../../utils/sendTransaction";
 
 import Message from "../../components/Message/Message";
+import sortArrayOfObjects from "../../utils/sortArrayOfObjects";
 
 export default function Home() {
   const { contract } = useContext(Web3Context);
@@ -26,13 +27,19 @@ export default function Home() {
   useEffect(() => {
     const fetchMessages = async () => {
       if (latestMessageId && latestMessageId > 0) {
-        const latestIds = range(latestMessageId - limit, latestMessageId);
+        const latestIds = getPositiveRange(
+          latestMessageId - limit,
+          latestMessageId
+        );
         for await (let i of latestIds) {
           let nft = await contract.tokenURI(i);
           nft = decodeBase64(nft.split(",")[1]);
           nft = JSON.parse(nft);
           nft.tokenId = i;
-          setNfts((previousNfts) => [...previousNfts, nft]);
+
+          setNfts((previousNfts) =>
+            sortArrayOfObjects([...previousNfts, nft], "tokenId", "desc")
+          );
         }
       }
       if (
@@ -55,7 +62,7 @@ export default function Home() {
     });
   };
 
-  const range = (start, end) => {
+  const getPositiveRange = (start, end) => {
     let output = [];
     for (let i = start + 1; i < end + 1; i++) {
       output.push(i);

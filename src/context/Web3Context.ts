@@ -10,7 +10,7 @@ export type Web3ContextType = {
   activateBrowserWallet: (provider: any) => void;
 };
 
-const defaultValue = {
+const defaultValue: Web3ContextType = {
   provider: null,
   signer: "",
   account: "",
