@@ -27,10 +27,13 @@ export default async function getProvider() {
 }
 
 const getInfuraProvider = () => {
-  const provider: any = new ethers.providers.InfuraProvider(
-    "rinkeby",
-    process.env.REACT_APP_INFURA_ID
+  const provider: any = new ethers.providers.JsonRpcProvider(
+    `https://avalanche-fuji.infura.io/v3/${process.env.REACT_APP_INFURA_ID}`
   );
+  // const provider: any = new ethers.providers.InfuraProvider(
+  //   "rinkeby",
+  //   process.env.REACT_APP_INFURA_ID
+  // );
   provider.isInfura = true;
   return provider;
 };
