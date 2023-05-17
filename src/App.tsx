@@ -58,7 +58,7 @@ export default function App() {
           break;
         default:
           setErrorMessage(
-            "Please install MetaMask to interact with the application"
+            "Please install and login to MetaMask to interact with the application"
           );
           break;
       }
