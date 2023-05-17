@@ -15,6 +15,7 @@ const Message = ({ nft, ...props }: any) => {
   const { contract } = useContext(Web3Context);
   const [message, setMessage] = useState("");
   const [creationDate, setCreationDate] = useState("");
+  const [creationDateFromNow, setCreationDateFromNow] = useState("");
   const [author, setAuthor] = useState("");
   const [authorWallet, setAuthorWallet] = useState("");
   const [userStatus, setUserStatus] = useState(false);
@@ -30,8 +31,9 @@ const Message = ({ nft, ...props }: any) => {
       nft.attributes.forEach((attr: { trait_type: string; value: any }) => {
         switch (attr.trait_type) {
           case "Created":
-            const fromNow = dayjs.unix(parseInt(attr.value)).fromNow();
-            setCreationDate(fromNow);
+            const date = dayjs.unix(parseInt(attr.value));
+            setCreationDate(date.format("HH:mm • DD MMM YYYY"));
+            setCreationDateFromNow(date.fromNow());
             break;
           case "Author":
             _author = attr.value;
@@ -120,6 +122,7 @@ const Message = ({ nft, ...props }: any) => {
               <div className={styles.messageInfo}>
                 Posted by:{" "}
                 <span
+                  title={authorWallet}
                   onClick={(e) => redirectToProfile(e)}
                   className={`hover:underline ${
                     !userStatus ? styles.unregistered : ""
@@ -127,7 +130,10 @@ const Message = ({ nft, ...props }: any) => {
                 >
                   {author}
                 </span>{" "}
-                • {creationDate}
+                •{" "}
+                <span title={creationDate} className="hover:underline">
+                  {creationDateFromNow}
+                </span>
               </div>
             </div>
           </div>
