@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { ethers } from "ethers";
 
@@ -13,6 +13,26 @@ import "./Header.css";
 export default function Header() {
   const web3Context: Web3ContextType = useContext(Web3Context);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [showSwitchNetworkButton, setShowSwitchNetworkButton] = useState(false);
+  const [showConnectWalletButton, setShowConnectWalletButton] = useState(false);
+
+  const init = async () => {
+    const isMetamaskUnlocked = await window.ethereum?._metamask.isUnlocked();
+    setShowSwitchNetworkButton(isShowSwitchNetworkButton(isMetamaskUnlocked));
+    setShowConnectWalletButton(isShowConnectWalletButton(isMetamaskUnlocked));
+  };
+
+  useEffect(() => {
+    init();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (web3Context.provider) {
+      init();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [web3Context.provider]);
 
   const switchNetwork = async () => {
     if (window.ethereum.networkVersion !== constants.CHAIN_ID) {
@@ -48,6 +68,17 @@ export default function Header() {
     }
   };
 
+  const isShowSwitchNetworkButton = (isMetamaskUnlocked: boolean): boolean => {
+    return (
+      isMetamaskUnlocked &&
+      window.ethereum?.networkVersion !== constants.CHAIN_ID
+    );
+  };
+
+  const isShowConnectWalletButton = (isMetamaskUnlocked: boolean): boolean => {
+    return !isMetamaskUnlocked;
+  };
+
   return (
     <div>
       <header className="bg-primary shadow-xl">
@@ -73,7 +104,7 @@ export default function Header() {
                 {web3Context.account && (
                   <Link
                     to={`/user/${web3Context.account}`}
-                    className="btn btn-ghost btn-sm rounded-btn"
+                    className="btn btn-ghost btn-sm rounded-btn normal-case"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -95,24 +126,22 @@ export default function Header() {
               </div>
             </div>
             <div className="px-2 mx-2">
-              {window.ethereum &&
-                window.ethereum?.networkVersion !== constants.CHAIN_ID && (
-                  <button
-                    onClick={switchNetwork}
-                    className="btn btn-ghost btn-sm rounded-btn"
-                  >
-                    Switch to {constants.NETWORK_NAME} Network
-                  </button>
-                )}
-              {window.ethereum?.networkVersion !== constants.CHAIN_ID &&
-                !web3Context.account && (
-                  <button
-                    onClick={web3Context.activateBrowserWallet}
-                    className="btn btn-ghost btn-sm rounded-btn"
-                  >
-                    Connect Wallet
-                  </button>
-                )}
+              {showSwitchNetworkButton && (
+                <button
+                  onClick={switchNetwork}
+                  className="btn btn-ghost btn-sm border border-white rounded-btn normal-case"
+                >
+                  Switch to {constants.NETWORK_NAME} Network
+                </button>
+              )}
+              {showConnectWalletButton && (
+                <button
+                  onClick={web3Context.activateBrowserWallet}
+                  className="btn btn-ghost btn-sm border border-white rounded-btn normal-case"
+                >
+                  Connect Wallet
+                </button>
+              )}
               {window.ethereum?.networkVersion === constants.CHAIN_ID &&
                 web3Context.account && (
                   <p className="header-wallet">

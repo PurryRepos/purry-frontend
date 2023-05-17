@@ -1,26 +1,23 @@
 import { ethers } from "ethers";
-import constants from "../constants";
 
 declare var window: any;
 
 export default async function getProvider() {
   let provider;
   if (window.ethereum) {
-    provider = new ethers.providers.Web3Provider(window.ethereum, "any");
+    provider = new ethers.providers.Web3Provider(window.ethereum);
   } else {
     provider = getInfuraProvider();
   }
-  const network = await provider.getNetwork();
-  const chainId = network.chainId;
-
-  if (chainId.toString() !== constants.CHAIN_ID.toString()) {
-    throw new Error("wrong-network");
-  }
 
   try {
-    await provider.send("eth_requestAccounts", []);
+    const isMetamaskUnlocked = await window.ethereum?._metamask.isUnlocked();
+    if (isMetamaskUnlocked === false) {
+      await provider.send("eth_requestAccounts", []);
+    }
   } catch (error) {
     provider = getInfuraProvider();
+    console.log(error);
   }
 
   return await provider;
