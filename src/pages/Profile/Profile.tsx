@@ -38,8 +38,11 @@ export default function Profile() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address, contract]);
 
-  const init = async () => {
+  useEffect(() => {
     setIsMyProfile(account === address);
+  }, [account, address]);
+
+  const init = async () => {
     getUsername();
     getUserStatus();
     getUserUpVotes();
@@ -233,6 +236,7 @@ export default function Profile() {
             type="text"
             placeholder={username}
             className="input input-bordered basis-4/5 mr-3"
+            maxLength={32}
           />
           <button
             disabled={disableUsername}

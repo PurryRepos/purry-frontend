@@ -91,6 +91,7 @@ export default function Home() {
           type="text"
           placeholder="Type your message"
           className="input shadow-md basis-4/5 mr-3"
+          maxLength={85}
         />
         <button onClick={mint} className="btn btn-primary shadow-lg basis-1/5">
           Send

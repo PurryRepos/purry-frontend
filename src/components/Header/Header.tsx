@@ -1,10 +1,12 @@
-import { useState, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { ethers } from "ethers";
 
 import Web3Context from "../../context/Web3Context";
 import truncateAddress from "../../utils/truncateAddress";
 import constants from "../../constants";
+
+import metamaskIcon from "../../assets/metamask.svg";
 
 import type { Web3ContextType } from "../../context/Web3Context";
 
@@ -13,6 +15,28 @@ import "./Header.css";
 export default function Header() {
   const web3Context: Web3ContextType = useContext(Web3Context);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [showSwitchNetworkButton, setShowSwitchNetworkButton] = useState(false);
+  const [showConnectWalletButton, setShowConnectWalletButton] = useState(false);
+  const [showProfileButton, setShowProfileButton] = useState(false);
+
+  const init = async () => {
+    const isMetamaskUnlocked = await window.ethereum?._metamask.isUnlocked();
+    setShowSwitchNetworkButton(isShowSwitchNetworkButton(isMetamaskUnlocked));
+    setShowConnectWalletButton(isShowConnectWalletButton(isMetamaskUnlocked));
+    setShowProfileButton(isShowProfileButton(isMetamaskUnlocked));
+  };
+
+  useEffect(() => {
+    init();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (web3Context.provider) {
+      init();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [web3Context]);
 
   const switchNetwork = async () => {
     if (window.ethereum.networkVersion !== constants.CHAIN_ID) {
@@ -48,6 +72,28 @@ export default function Header() {
     }
   };
 
+  const isShowSwitchNetworkButton = (isMetamaskUnlocked: boolean): boolean => {
+    return (
+      isMetamaskUnlocked &&
+      window.ethereum?.networkVersion !== constants.CHAIN_ID
+    );
+  };
+
+  const isShowConnectWalletButton = (isMetamaskUnlocked: boolean): boolean => {
+    return window.ethereum && !isMetamaskUnlocked;
+  };
+
+  const isShowProfileButton = (isMetamaskUnlocked: boolean): boolean => {
+    return web3Context.account && isMetamaskUnlocked;
+  };
+
+  const showConnectWalletAddress = () => {
+    return (
+      window.ethereum?.networkVersion === constants.CHAIN_ID &&
+      web3Context.account
+    );
+  };
+
   return (
     <div>
       <header className="bg-primary shadow-xl">
@@ -64,16 +110,55 @@ export default function Header() {
                 <span className="text-lg font-bold normal-case">Purry</span>
               </Link>
             </div>
+            <div className="px-2 mx-2">
+              {showSwitchNetworkButton && (
+                <button
+                  onClick={switchNetwork}
+                  className="btn btn-ghost btn-sm border border-white rounded-btn normal-case"
+                >
+                  Switch to {constants.NETWORK_NAME} Network
+                </button>
+              )}
+              {!window.ethereum && (
+                <a
+                  target="_blank"
+                  rel="noreferrer"
+                  href="https://metamask.io/download/"
+                  className="btn btn-ghost btn-sm border border-white rounded-btn normal-case"
+                >
+                  <img
+                    src={metamaskIcon}
+                    width={25}
+                    alt="MetaMask Icon"
+                    className="mr-1"
+                  />
+                  Install MetaMask
+                </a>
+              )}
+              {showConnectWalletButton && (
+                <button
+                  onClick={web3Context.activateBrowserWallet}
+                  className="btn btn-ghost btn-sm border border-white rounded-btn normal-case"
+                >
+                  Connect Wallet
+                </button>
+              )}
+              {showConnectWalletAddress() && (
+                <p className="header-wallet">
+                  {truncateAddress(web3Context.account)}
+                </p>
+              )}
+            </div>
             <div
               className={
                 showMobileMenu ? "px-2 mx-2" : "hidden lg:flex px-2 mx-2"
               }
             >
               <div className="flex items-stretch mobile-menu">
-                {web3Context.account && (
+                {showProfileButton && (
                   <Link
                     to={`/user/${web3Context.account}`}
-                    className="btn btn-ghost btn-sm rounded-btn"
+                    className="btn btn-ghost btn-sm rounded-btn normal-case"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -93,32 +178,6 @@ export default function Header() {
                   </Link>
                 )}
               </div>
-            </div>
-            <div className="px-2 mx-2">
-              {window.ethereum &&
-                window.ethereum?.networkVersion !== constants.CHAIN_ID && (
-                  <button
-                    onClick={switchNetwork}
-                    className="btn btn-ghost btn-sm rounded-btn"
-                  >
-                    Switch to {constants.NETWORK_NAME} Network
-                  </button>
-                )}
-              {window.ethereum?.networkVersion !== constants.CHAIN_ID &&
-                !web3Context.account && (
-                  <button
-                    onClick={web3Context.activateBrowserWallet}
-                    className="btn btn-ghost btn-sm rounded-btn"
-                  >
-                    Connect Wallet
-                  </button>
-                )}
-              {window.ethereum?.networkVersion === constants.CHAIN_ID &&
-                web3Context.account && (
-                  <p className="header-wallet">
-                    {truncateAddress(web3Context.account)}
-                  </p>
-                )}
             </div>
             <div className="lg:hidden">
               <button
