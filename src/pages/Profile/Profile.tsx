@@ -7,6 +7,7 @@ import sendTransaction from "../../utils/sendTransaction";
 import Message from "../../components/Message/Message";
 
 import styles from "./Profile.module.scss";
+import sortArrayOfObjects from "../../utils/sortArrayOfObjects";
 
 export default function Profile() {
   const address = useParams().address;
@@ -51,7 +52,7 @@ export default function Profile() {
 
     setNfts([]);
     const promises = [];
-    for (let i = userMessageIds.length - 1; i >= 0; --i) {
+    for (let i = 0; i < userMessageIds.length; ++i) {
       promises.push(contract.tokenURI(userMessageIds[i]));
     }
     const messages = await Promise.all(promises);
@@ -60,7 +61,9 @@ export default function Profile() {
       nft = decodeBase64(nft.split(",")[1]);
       nft = JSON.parse(nft);
       nft.tokenId = userMessageIds[i];
-      setNfts((previousNfts) => [...previousNfts, nft]);
+      setNfts((previousNfts) => {
+        return sortArrayOfObjects([...previousNfts, nft], "tokenId", "desc");
+      });
     });
     setLoading(false);
   };

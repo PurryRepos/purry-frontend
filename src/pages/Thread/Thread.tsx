@@ -5,6 +5,7 @@ import decodeBase64 from "../../utils/decodeBase64";
 import Message from "../../components/Message/Message";
 
 import styles from "../../components/Message/Message.module.scss";
+import sortArrayOfObjects from "../../utils/sortArrayOfObjects";
 
 export default function Thread() {
   const tokenId = useParams().tokenId;
@@ -58,7 +59,9 @@ export default function Thread() {
       nft = decodeBase64(nft.split(",")[1]);
       nft = JSON.parse(nft);
       nft.tokenId = messageIds[i];
-      setNfts((previousNfts) => [...previousNfts, nft]);
+      setNfts((previousNfts) =>
+        sortArrayOfObjects([...previousNfts, nft], "tokenId")
+      );
     });
 
     const element = document.getElementById(`message-${tokenId}`);
